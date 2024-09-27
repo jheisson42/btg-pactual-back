@@ -31,14 +31,12 @@ public class UserServiceTest {
 
     @Test
     public void testInsertUser_WithSufficientBalance() {
-        User user = new User();
-        user.setSaldo(600000); 
+    	 User user = new User();
+    	 user.setSaldo(600000); 
 
-        doNothing().when(userRepository).save(user);
-
-        userService.insertUser(user);
-
-        verify(userRepository, times(1)).save(user);
+    	 userService.insertUser(user);
+    	    
+    	 verify(userRepository, times(1)).save(user);
     }
 
     @Test
@@ -76,27 +74,21 @@ public class UserServiceTest {
 
     @Test
     public void testGetUserById_Success() {
-        // Crear un usuario simulado
         User user = new User();
         user.setId("user123");
 
-        // Simular la respuesta del repositorio
         when(userRepository.findById("user123")).thenReturn(Optional.of(user));
 
-        // Ejecutar el método
         User result = userService.getUserById("user123");
 
-        // Verificar que el usuario retornado sea correcto
         assertEquals("user123", result.getId());
         verify(userRepository, times(1)).findById("user123");
     }
 
     @Test
     public void testGetUserById_UserNotFound() {
-        // Simular que el usuario no es encontrado
-        when(userRepository.findById("user123")).thenReturn(Optional.empty());
+    	when(userRepository.findById("user123")).thenReturn(Optional.empty());
 
-        // Verificar que se lanza la excepción cuando el usuario no es encontrado
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             userService.getUserById("user123");
         });
@@ -107,17 +99,13 @@ public class UserServiceTest {
 
     @Test
     public void testDeleteUser() {
-        // Crear un usuario simulado
         User user = new User();
         user.setId("user123");
 
-        // Simular la llamada al repositorio para eliminar
         doNothing().when(userRepository).delete(user);
 
-        // Ejecutar el método
         userService.deleteUser(user);
 
-        // Verificar que el repositorio haya llamado el método delete
         verify(userRepository, times(1)).delete(user);
     }
 }
