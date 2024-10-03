@@ -9,5 +9,5 @@ public interface IUserService {
 	void insertUser(User user);
 	List<User> getAllUsers();
 	User getUserById(String id);
-	void deleteUser(User user);
+	void deleteUser(String idUser);
 }

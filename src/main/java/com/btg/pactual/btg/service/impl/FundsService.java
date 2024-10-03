@@ -2,6 +2,7 @@ package com.btg.pactual.btg.service.impl;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -86,13 +87,15 @@ public class FundsService implements IFundsService {
 	}
 
 	private void subscribeToFund(User user, Funds funds) {
-	    CurrentFunds currentFunds = new CurrentFunds(funds.getId(), funds.getNombre(), LocalDateTime.now(), funds.getMontoMinimoVinculacion());
+	    Date now = new Date(); // Obtener la fecha y hora actuales
+	    CurrentFunds currentFunds = new CurrentFunds(funds.getId(), funds.getNombre(), now, funds.getMontoMinimoVinculacion());
 	    user.getCurrentFunds().add(currentFunds);
 	    user.setSaldo(user.getSaldo() - funds.getMontoMinimoVinculacion());
 	    registerTransaction(user, "SUBSCRIPCION", funds);
 	    userRepository.save(user);
-	    smsSender.notification("Usuario " + user.getNombre() + " se ha subscito a: " + funds.getNombre(), user.getTelefono());
+	    smsSender.notification("Usuario " + user.getNombre() + " se ha suscrito a: " + funds.getNombre(), user.getTelefono());
 	}
+
 
 	private void cancelSubscription(User user, Funds funds) {
 	    user.getCurrentFunds().removeIf(f -> f.getFondoId().equals(funds.getId()));
@@ -103,11 +106,12 @@ public class FundsService implements IFundsService {
 	}
 
 	private void registerTransaction(User user, String tipoTransaccion, Funds funds) {
+	    Date now = new Date(); // Obtener la fecha y hora actuales
 	    Transaction transaccion = new Transaction(
 	            UUID.randomUUID().toString(),
 	            tipoTransaccion,
 	            funds.getNombre(),
-	            LocalDateTime.now(),
+	            now,
 	            funds.getMontoMinimoVinculacion()
 	    );
 	    user.getHistoryTransactions().add(transaccion);

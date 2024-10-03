@@ -8,7 +8,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -89,6 +89,9 @@ public class FundsServiceTest {
 
     @Test
     public void testManageSubscription_UserAlreadySubscribed() throws Exception {
+    	
+        Date now = new Date();
+
         User user = new User();
         user.setId("user123");
         user.setSaldo(100000);
@@ -97,7 +100,7 @@ public class FundsServiceTest {
         fund.setId("fund123");
         fund.setMontoMinimoVinculacion((double) 50000);
 
-        user.setCurrentFunds(List.of(new CurrentFunds(fund.getId(), fund.getNombre(), LocalDateTime.now(), fund.getMontoMinimoVinculacion())));
+        user.setCurrentFunds(List.of(new CurrentFunds(fund.getId(), fund.getNombre(),now, fund.getMontoMinimoVinculacion())));
 
         when(userRepository.findById("user123")).thenReturn(Optional.of(user));
         when(fundsRepository.findById("fund123")).thenReturn(Optional.of(fund));

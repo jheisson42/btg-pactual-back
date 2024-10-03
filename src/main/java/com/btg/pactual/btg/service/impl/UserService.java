@@ -1,5 +1,6 @@
 package com.btg.pactual.btg.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -23,9 +24,18 @@ public class UserService implements IUserService{
      */
 	@Override
 	public void insertUser(User user) {
+		 List<User> userFind = new ArrayList<>(); 
+		
 		// Valida que el saldo inicial sea suficiente
         if (user.getSaldo() < 500000) {
             throw new IllegalArgumentException("El saldo inicial debe ser al menos COP $500.000");
+        }
+
+		// Valida que el usuario no exista
+        userFind = userRepository.findByEmail(user.getEmail());
+        
+        if (!userFind.isEmpty()) {
+            throw new IllegalArgumentException("El correo: " + user.getEmail() + " se encuentra registrado.");
         }
         userRepository.save(user);		
 	}
@@ -51,8 +61,16 @@ public class UserService implements IUserService{
 	}
 
 	@Override
-	public void deleteUser(User user) {
-		userRepository.delete(user);		
-	}
+	public void deleteUser(String idUser) {
+		 // Encuentra usuario por su ID
+		User userEntity = getUserById(idUser);
+
+	    // Si el usuario existe se elimina
+	    if (userEntity != null) {
+	        userRepository.delete(userEntity);
+	    } else {
+	        throw new IllegalArgumentException("Usuario no encontrado para el ID: " + idUser);
+	    }
+	 }
 
 }

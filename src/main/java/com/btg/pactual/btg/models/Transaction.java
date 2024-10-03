@@ -1,6 +1,7 @@
 package com.btg.pactual.btg.models;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -10,7 +11,7 @@ public class Transaction {
 	private String transaccionId;
     private String tipo; // "apertura" o "cancelacion"
     private String nombreFondo;
-    private LocalDateTime fecha;
+    private Date fecha;
     private double monto;
 
     // Constructor vacío
@@ -18,7 +19,7 @@ public class Transaction {
     }
 
     // Constructor completo
-    public Transaction(String transaccionId, String tipo, String nombreFondo, LocalDateTime fecha, double monto) {
+    public Transaction(String transaccionId, String tipo, String nombreFondo, Date fecha, double monto) {
         this.transaccionId = transaccionId;
         this.tipo = tipo;
         this.nombreFondo = nombreFondo;
@@ -51,11 +52,11 @@ public class Transaction {
         this.nombreFondo = nombreFondo;
     }
 
-    public LocalDateTime getFecha() {
+    public Date getFecha() {
         return fecha;
     }
 
-    public void setFecha(LocalDateTime fecha) {
+    public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
 

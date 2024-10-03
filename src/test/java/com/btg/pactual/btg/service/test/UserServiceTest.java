@@ -98,14 +98,17 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testDeleteUser() {
-        User user = new User();
-        user.setId("user123");
+    public void testDeleteUser_UserNotFound() {
+        String userId = "123";
 
-        doNothing().when(userRepository).delete(user);
+        // Configura el mock para devolver un Optional vacío cuando el usuario no es encontrado
+        when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
-        userService.deleteUser(user);
+        // Act & Assert
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            userService.deleteUser(userId);
+        });
 
-        verify(userRepository, times(1)).delete(user);
+        assertEquals("Usuario no encontrado", exception.getMessage());
     }
 }

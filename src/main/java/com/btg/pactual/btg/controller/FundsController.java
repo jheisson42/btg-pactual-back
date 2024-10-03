@@ -9,10 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.btg.pactual.btg.dto.SubscriptionRequest;
 import com.btg.pactual.btg.models.Funds;
 import com.btg.pactual.btg.service.interfaces.IFundsService;
 
@@ -28,11 +29,11 @@ public class FundsController {
 	}
 
 	@PostMapping("/manage-subscription")
-	public ResponseEntity<Map<String, String>> subscribe(@RequestParam String usuarioId, @RequestParam String fondoId, @RequestParam String action) {
+	public ResponseEntity<Map<String, String>> subscribe(@RequestBody SubscriptionRequest subscriptionRequest) {
 	    Map<String, String> response = new HashMap<>();
 	    try {
-	        fundsService.manageSubscription(usuarioId, fondoId, action);
-	        response.put("message", "Subscripcion " + action);
+	        fundsService.manageSubscription(subscriptionRequest.getUsuarioId(), subscriptionRequest.getFondoId(), subscriptionRequest.getAction());
+	        response.put("message", "Subscripcion " + subscriptionRequest.getAction());
 	        return new ResponseEntity<>(response, HttpStatus.OK);    
 	    } catch (Exception e) {
 	        response.put("error", e.getMessage());
@@ -41,9 +42,9 @@ public class FundsController {
 	}
 
 
-	    // Obtener todos los fondos
-	    @GetMapping("/get-all-funds")
-	    public List<Funds> getFunds() {
-	        return fundsService.getFunds();
-	    }
+    // Obtener todos los fondos
+    @GetMapping("/get-all-funds")
+    public List<Funds> getFunds() {
+        return fundsService.getFunds();
+    }
 }

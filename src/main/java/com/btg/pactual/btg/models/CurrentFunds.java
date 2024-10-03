@@ -1,6 +1,6 @@
 package com.btg.pactual.btg.models;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -11,13 +11,13 @@ public class CurrentFunds {
 	@Id
 	private String fondoId;
 	private String nombreFondo;
-	private LocalDateTime fechaVinculacion;
+	private Date fechaVinculacion;
 	private double montoInvertido;
 		
 	public CurrentFunds() {
 	}
 	
-	public CurrentFunds(String fondoId, String nombreFondo, LocalDateTime fechaVinculacion, double montoInvertido) {
+	public CurrentFunds(String fondoId, String nombreFondo, Date fechaVinculacion, double montoInvertido) {
 		this.fondoId = fondoId;
 		this.nombreFondo = nombreFondo;
 		this.fechaVinculacion = fechaVinculacion;
@@ -35,10 +35,10 @@ public class CurrentFunds {
 	public void setNombreFondo(String nombreFondo) {	
 		this.nombreFondo = nombreFondo;
 	}
-	public LocalDateTime getFechaVinculacion() {
+	public Date getFechaVinculacion() {
 		return fechaVinculacion;
 	}
-	public void setFechaVinculacion(LocalDateTime fechaVinculacion) {
+	public void setFechaVinculacion(Date fechaVinculacion) {
 		this.fechaVinculacion = fechaVinculacion;
 	}
 	public double getMontoInvertido() {
